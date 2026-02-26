@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3-Coloring ZKP Proof</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>3-Coloring ZKP</h1>
+                <p class="subtitle">Zero-Knowledge Proof of Graph Coloring</p>
+                <p class="subtitle">Samuel Z & Luca M</p>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav">
+            <button class="nav-btn active" data-tab="create">Create & Prove</button>
+            <button class="nav-btn" data-tab="verify">Verify Proof</button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main">
+            <!-- Create & Prove Tab -->
+            <section id="create" class="tab active">
+                <div class="section-container">
+                    <!-- Step 1: Graph Creation -->
+                    <div class="step">
+                        <h2 class="step-title">Step 1: Create Graph</h2>
+                        <div class="editor-toolbar">
+                            <div class="toolbar-group">
+                                <button id="modeBtn" class="tool-btn active" title="Click canvas to add nodes">
+                                    <span class="icon">●</span>
+                                    <span>Add/Remove Nodes</span>
+                                </button>
+                                <button id="edgeBtn" class="tool-btn" title="Select two nodes to connect">
+                                    <span class="icon">—</span>
+                                    <span>Add/Remove Edges</span>
+                                </button>
+                            </div>
+                            <div class="toolbar-group">
+                                <div class="color-palette">
+                                    <button class="color-dot" data-color="red" title="Red" style="background: #ef4444;"></button>
+                                    <button class="color-dot active" data-color="blue" title="Blue" style="background: #3b82f6;"></button>
+                                    <button class="color-dot" data-color="green" title="Green" style="background: #10b981;"></button>
+                                </div>
+                            </div>
+                            <div class="toolbar-group">
+                                <button id="clearBtn" class="tool-btn danger" title="Clear canvas">
+                                    <span class="icon">✖</span>
+                                </button>
+                            </div>
+                            <div class="toolbar-hint" id="canvasHint">Click to add nodes • Click a node to change its color • Click a node twice to remove it</div>
+                        </div>
+
+                        <div class="canvas-area">
+                            <canvas id="graphCanvas" width="700" height="450"></canvas>
+                        </div>
+
+                        <div class="step-footer">
+                            <span class="stats" id="graphStats">Nodes: 0 | Edges: 0</span>
+                            <button id="validateBtn" class="btn-primary">Validate & Proceed</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: ZKP Protocol -->
+                    <div class="step" id="zkpStep" style="display: none;">
+                        <h2 class="step-title">Step 2: Zero-Knowledge Proof</h2>
+                        
+                        <div class="zkp-arena">
+                            <!-- Prover Side -->
+                            <div class="prover-panel">
+                                <h3>Prover</h3>
+                                <p class="instruction" id="permutationInstruction" style="display: none;">Permutation</p>
+                                <div class="prover-controls">
+                                    <button id="permBtn" class="btn-primary">Generate Permutation</button>
+                                    <button id="commitBtn" class="btn-primary" style="display: none;">Create Commitment</button>
+                                </div>
+                                <canvas id="proverCanvas" width="320" height="320"></canvas>
+                                <p class="status" id="proverStatus"></p>
+                            </div>
+
+                            <!-- Verifier Side -->
+                            <div class="verifier-panel">
+                                <h3>Verifier</h3>
+                                <p class="instruction">Click an edge to challenge</p>
+                                <canvas id="verifierCanvas" width="320" height="320"></canvas>
+                                <p class="status" id="verifierStatus"></p>
+                            </div>
+                        </div>
+
+                        <div class="step-footer">
+                            <button id="resetBtn" class="btn-secondary">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Verify Tab -->
+            <section id="verify" class="tab">
+                <div class="section-container">
+                    <div class="verifier-mode">
+                        <h2 class="step-title">Proof Verification Game</h2>
+                        
+                        <div class="game-info">
+                            <p>Someone claims to know a valid 3-coloring. Test them by clicking edges.</p>
+                            <div class="game-counter">
+                                Successful rounds: <strong id="roundCount">0</strong>
+                            </div>
+                            <button id="generateNewGraphBtn" class="btn-secondary">Generate new graph</button>
+                        </div>
+
+                        <div class="game-layout">
+                            <div class="game-board">
+                                <canvas id="gameCanvas" width="400" height="400"></canvas>
+                                <p class="status" id="gameStatus"></p>
+                            </div>
+
+                            <div class="game-sidebar">
+                                <div class="revealed-box" id="revealedBox" style="display: none;">
+                                    <h4>Colors Revealed</h4>
+                                    <div id="revealedInfo"></div>
+                                </div>
+                                <div class="game-actions" id="gameActions" style="display: none;">
+                                    <button id="acceptGameBtn" class="btn-success">Accept</button>
+                                    <button id="retryGameBtn" class="btn-secondary">Retry</button>
+                                    <button id="denyGameBtn" class="btn-danger">Deny</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="gameResult" class="result-box" style="display: none;">
+                            <h3 id="resultTitle"></h3>
+                            <canvas id="finalCanvas" width="350" height="350"></canvas>
+                            <p id="resultMsg"></p>
+                            <button id="playAgainBtn" class="btn-primary">Generate new graph</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
